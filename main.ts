@@ -1,4 +1,4 @@
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
 // The best meal I ever had, in one sentence.
 const sentence =
@@ -6,3 +6,9 @@ const sentence =
 
 mkdirSync("/output", { recursive: true });
 writeFileSync("/output/entry.txt", sentence, "utf8");
+
+// Read-back verification: the file must round-trip byte-for-byte.
+const written = readFileSync("/output/entry.txt", "utf8");
+if (written !== sentence) {
+  throw new Error("entry.txt does not match the entry text after write");
+}
